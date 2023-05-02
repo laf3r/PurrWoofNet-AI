@@ -68,17 +68,17 @@ metrics = ['accuracy']
 mobilenet = MobileNetV2(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
 image_batch, label_batch = next(iter(train_dataset))
 feature_batch = mobilenet(image_batch)
-print(feature_batch.shape)
+
 
 mobilenet.trainable = False 
 
 global_average_layer = tf.keras.layers.GlobalAveragePooling2D()
 feature_batch_average = global_average_layer(feature_batch)
-print(feature_batch_average.shape)
+
 
 prediction_layer = tf.keras.layers.Dense(1)
 prediction_batch = prediction_layer(feature_batch_average)
-print(prediction_batch.shape)
+
 
 # Инициализация модели
 # Для бинарной классификации используется оптимизатор Adam Adaptive Moment Estimation
@@ -98,7 +98,7 @@ model.compile(optimizer=optimizer,
 
 
 # Обучение модели
-history = model.fit(train_dataset, epochs=EPOCHS, validation_data=validation_dataset, callbacks=[tensorboard_callback])
+history = model.fit(train_dataset, epochs=EPOCHS, validation_data=validation_dataset)
 
 # Построение графика точности и потерь
 acc = history.history['accuracy']
